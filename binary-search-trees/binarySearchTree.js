@@ -84,15 +84,47 @@ class BinarySearchTree {
   }
 
   delete(value) {
-    function deleteNode(node, parentNode) {
+    function deleteNode(node) {
+      if (node === null) {
+        return node
+      }
       if (node.value !== value) {
         if (value < node.value) {
-          return deleteNode(node.left, node)
+          node.left = deleteNode(node.left)
         } else {
-          return deleteNode(node.right, node)
+          node.right = deleteNode(node.right)
+        }
+      } else {
+        const isLeftNull = node.left === null
+        const isRightNull = node.right === null
+        if (isLeftNull && isRightNull) {
+          return null
+        } else if (isLeftNull) {
+          return node.right
+        } else if (isRightNull) {
+          return node.left
+        } else {
+          let succParent = node
+
+          let succ = node.right;
+          while (succ.left !== null) {
+            succParent = succ;
+            succ = succ.left;
+          }
+
+          if (succParent !== node) {
+            succParent.left = succ.right;
+          } else {
+            succParent.right = succ.right
+          }
+
+          node.value = succ.value
         }
       }
+      return node
     }
+
+    this.root = deleteNode(this.root)
 
   }
 
@@ -106,6 +138,8 @@ class BinarySearchTree {
         return find(node.left)
       } else if (value > node.value) {
         return find(node.right)
+      } else {
+
       }
     }
     const node = find(this.root)
@@ -151,10 +185,10 @@ class BinarySearchTree {
 
 // const simpleArraySorted = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const tree = new BinarySearchTree();
-tree.insert(1);
-tree.insert(2);
+const tree = new BinarySearchTree([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
+prettyPrint(tree.root);
+tree.delete(5)
 prettyPrint(tree.root);
 
 module.exports = { BinarySearchTree };

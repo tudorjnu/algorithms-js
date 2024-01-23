@@ -54,6 +54,33 @@ describe("Test insert", () => {
   });
 });
 
+describe("Test Delete", () => {
+  beforeEach(() => {
+    tree = new BinarySearchTree(simpleSorted)
+  })
+
+  test("delete leaf 1", () => {
+    tree.delete(1)
+    expect(tree.inOrder()).toStrictEqual([2, 3, 4, 5, 6, 7, 8, 9])
+  })
+
+  test("delete leaf 6", () => {
+    tree.delete(6)
+    expect(tree.inOrder()).toStrictEqual([1, 2, 3, 4, 5, 7, 8, 9])
+  })
+
+  test("delete w one child", () => {
+    tree.delete(7)
+    expect(tree.inOrder()).toStrictEqual([1, 2, 3, 4, 5, 6, 8, 9])
+  })
+
+
+  test("delete w two childs", () => {
+    tree.delete(5)
+    expect(tree.inOrder()).toStrictEqual([1, 2, 3, 4, 6, 7, 8, 9])
+  })
+})
+
 describe("Test Find", () => {
   test("find 1", () => {
     const tree = new BinarySearchTree(simpleSorted);
